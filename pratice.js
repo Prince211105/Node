@@ -29,75 +29,76 @@ let Phonebook = [
     },
 ]
 
+app.use(express.static('dist'))
 app.get('/api/data', (req, res) => {
     res.json(Phonebook)
 })
 
-// app.get('/api/data/:id', (req, res) => {
-//     let id = Number(req.params.id)
-//     let data = Phonebook.find(e => e.id === id)
-//     if (data) {
-//         res.json(data)
-//     }
-//     else {
-//         res.status(404).json({
-//             error: 404,
-//             message: "Data is not found"
-//         })
-//     }
-// })
+app.get('/api/data/:id', (req, res) => {
+    let id = Number(req.params.id)
+    let data = Phonebook.find(e => e.id === id)
+    if (data) {
+        res.json(data)
+    }
+    else {
+        res.status(404).json({
+            error: 404,
+            message: "Data is not found"
+        })
+    }
+})
 
 
-// app.delete('/api/data/:id', (req, res) => {
-//     let id = Number(req.params.id)
-//     Phonebook = Phonebook.filter(item => item.id !== id)
-//     res.status(404).end()
-// })
+app.delete('/api/data/:id', (req, res) => {
+    let id = Number(req.params.id)
+    Phonebook = Phonebook.filter(item => item.id !== id)
+    res.status(404).end()
+})
 
-// app.use((req, res, next) => {
-//     const { name, number } = req.body
+app.use((req, res, next) => {
+    const { name, number } = req.body
 
-//     if (!name || !number) {
-//         return res.status(404).json({
-//             error: 404,
-//             message: "name and number is missing"
-//         })
-//     }
-//     next()
-// })
+    if (!name || !number) {
+        return res.status(404).json({
+            error: 404,
+            message: "name and number is missing"
+        })
+    }
+    next()
+})
 
-// app.use((req, res, next) => {
-//     const { name } = req.body
-//     const isadd = Phonebook.find(phone => phone.name === name)
+app.use((req, res, next) => {
+    const { name } = req.body
+    const isadd = Phonebook.find(phone => phone.name === name)
 
-//     if (isadd) {
-//         return res.status(404).json({
-//             error: 404,
-//             message: "must be name unique"
-//         })
-//     }
-//     next()
-// })
+    if (isadd) {
+        return res.status(404).json({
+            error: 404,
+            message: "must be name unique"
+        })
+    }
+    next()
+})
 
 
 
-// const newid = () => {
-//     let maxId = Phonebook.length > 0 ? Math.max(...Phonebook.map(e => e.id)) : 0
-//     return maxId + 1;
-// }
+const newid = () => {
+    let maxId = Phonebook.length > 0 ? Math.max(...Phonebook.map(e => e.id)) : 0
+    return maxId + 1;
+}
 
-// app.post('/api/data', (req, res) => {
-//     const { name, number } = req.body
+app.post('/api/data', (req, res) => {
+    const { name, number } = req.body
 
-//     const Phone = {
-//         name: name,
-//         number: number,
-//         id: newid()
-//     }
+    const Phone = {
+        name: name,
+        number: number,
+        id: newid()
+    }
 
-//     Phonebook.push(Phone)
-//     res.json(Phone)
-// })
+    Phonebook.push(Phone)
+    res.json(Phone)
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
