@@ -7,30 +7,7 @@ app.use(express.json())
 app.use(cors())
 
 let Phonebook = [
-    {
-        "id": 1,
-        "name": "Arto Hellas",
-        "number": "040-123456",
-        
-    },
-    {
-        "id": 2,
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        
-    },
-    {
-        "id": 3,
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        
-    },
-    {
-        "id": 4,
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122",
-      
-    },
+
 ]
 
 app.use(express.static('dist'))
@@ -76,8 +53,10 @@ app.put('/api/data/:id', (req, res) => {
 
 app.delete('/api/data/:id', (req, res) => {
     let id = Number(req.params.id)
-    Phonebook = Phonebook.filter(item => item.id == id)
-    res.status(404).end()
+    Phonebook = Phonebook.filter(item => item.id !== id)
+    res.json({
+        error: 404
+    })
 })
 
 app.use((req, res, next) => {
