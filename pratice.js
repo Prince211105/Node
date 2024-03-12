@@ -48,11 +48,26 @@ app.get('/api/data/:id', (req, res) => {
     }
 })
 
-app.put('/api/data/:id',(req,res) => {
-    return res.json({
-        error : 404,
-        message : 'put route'
+app.put('/api/data/:id', (req, res) => {
+    let id = Number(req.params.id)
+    let name = req.body.name
+    let number = req.body.number
+
+    let index = Phonebook.findIndex(phone => {
+        return phone.id == id
     })
+    if (index >= 0) {
+        let Phone = Phonebook[index]
+        Phone.name = name
+        Phone.number = number
+        res.json(Phone)
+    }
+    else {
+        res.status(404).json({
+            error: 404,
+            Message: "Data is not found"
+        })
+    }
 })
 
 app.delete('/api/data/:id', (req, res) => {
