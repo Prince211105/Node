@@ -72,8 +72,15 @@ app.put('/api/data/:id', (req, res) => {
 
 app.delete('/api/data/:id', (req, res) => {
     let id = Number(req.params.id)
-    Phonebook = Phonebook.filter(item => item.id !== id)
-    res.status(404).end()
+    let Phonebook = Phonebook.filter(item => item.id == id)
+
+    if (Phonebook >= 0) {
+        let Phone = Phonebook[index]
+        Phonebook.splice(Phonebook, 1)
+        res.json(Phone)
+    } else {
+        res.status(404)
+    }
 })
 
 app.use((req, res, next) => {
