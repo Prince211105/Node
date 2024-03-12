@@ -48,6 +48,12 @@ app.get('/api/data/:id', (req, res) => {
     }
 })
 
+app.put('/api/data/:id',(req,res) => {
+    return res.json({
+        error : 404,
+        message : 'put route'
+    })
+})
 
 app.delete('/api/data/:id', (req, res) => {
     let id = Number(req.params.id)
