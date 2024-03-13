@@ -3,6 +3,9 @@ const app = express()
 const PORT = 2001;
 app.use(express.json())
 // const mongoose = require('mongoose')
+const cors = require('cors')
+
+app.use(cors())
 
 let Phonebook = [
     {
