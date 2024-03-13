@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const PORT = 2001;
 app.use(express.json())
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
 let Phonebook = [
     {
