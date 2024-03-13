@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const PORT = 2001;
 app.use(express.json())
+const mongoose = require('mongoose')
 
 let Phonebook = [
     {
@@ -24,10 +25,22 @@ let Phonebook = [
     }
 
 ]
+app.use(express.static('dist'))
+// mongoose.connect("mongodb://localhost:27017/Phonebook").then(() => {
+//     console.log("conated to mongodb");
+// })
+
 
 app.get('/api/persons', (req, res) => {
     res.json(Phonebook)
 })
+
+// const noteSchema = new mongoose.Schema({
+//     content: String,
+//     important: Boolean,
+// })
+
+// const Note = mongoose.model('Note', noteSchema)
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
@@ -70,6 +83,7 @@ app.put('/api/persons/:id', (req, res) => {
         });
     }
 });
+
 
 app.use((req, res, next) => {
     const { name, number, email, age, address } = req.body;
