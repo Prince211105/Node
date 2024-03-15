@@ -12,7 +12,7 @@ app.use((req, res, next) => {
 
 //app.use(requestLogger)
 
-app.use((req,res,next) => {
+app.use((req,res) => {
     res.status(404).send({error : 'unknown endpoint'})
 })
 

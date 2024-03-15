@@ -11,7 +11,7 @@ app.route('/api/number/:id')
         let id = Number(req.params.id);
         let data = Phonebook.find(phone => phone.id === id)
         if (data) {
-            res.json(data.number)
+            res.json(data)
         } else {
             res.status(404).end("{status : 404 , Message : Page not found}")
         }

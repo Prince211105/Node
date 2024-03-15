@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
-const PORT = 1008
+const PORT = process.env.PORT || 1008
 //const morganBody = require('morgan-body')
 //const bodyParser = require('body-parser')
 let Phonebook = [
@@ -28,17 +28,18 @@ let Phonebook = [
     },
 ]
 
-
+app.use(express.static('dist'))
 app.use(cors({
-    origin : 'http://localhost:5173/'
+    origin: 'https://node-2-zph6.onrender.com'
 }))
 // app.options('localhost/:1/', cors());
-// app.use((req,res,next)=>{
-//     res.setHeader('Access-Control-Allow-Origin','*');
-//     res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
-//     res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
-//     next(); 
-// })
+app.use((req, res, next) => {
+    res.setHeader('x-cors-api-key' , 'temp_9738fa5b8a277d54e53f109f732163b4')
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+    res.header('Access-Control-Allow-Methods', 'Origin, X-Requested-with, Content-Type, Accept ,Authorization');
+    next();
+})
 
 app.use(express.json())
 //morgan methos name,path,run time duration
@@ -48,19 +49,21 @@ app.use(express.json())
 //     return res.hostname
 // })
 
-morgan.token('body', (req,res) => {
+morgan.token('body', (req) => {
     return JSON.stringify(req.body)
-  })
+})
 
 app.use(morgan(`:method :url :status :res[content-length] - :response-time ms :body`))
 
 
- //app.use(bodyParser.json())
+//app.use(bodyParser.json())
 //morganBody(app)
 
 
 app.get('/api/persons', (req, res) => {
+    console.log(Phonebook);
     res.json(Phonebook)
+    
 })
 
 app.use((req, res, next) => {
@@ -97,7 +100,7 @@ app.post('/api/persons', (req, res) => {
         // id: getnewID()
     }
     Phonebook = Phonebook.concat(persondata)
-   //console.log(persondata);
+    //console.log(persondata);
     res.json(persondata)
 })
 

@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.post('/api/persons', (req, res) => {
     let person = req.body
     Phonebook.push(person)
-    fs.writeFile('./Phonebook.json', JSON.stringify(Phonebook), (err, data) => {
+    fs.writeFile('./Phonebook.json', JSON.stringify(Phonebook), () => {
         return res.json({ status: 'success' })
     })
 })

@@ -19,16 +19,50 @@ mongoose.connect(DATABASE).then(() => {
     console.log("error", err);
 })
 
+const Errorhandler = (error, req, res, next) => {
+    console.error(error.message)
+    if (error.name === "CastError") {
+        return res.status(404).json({ message: "Not found" })
+    }
+    next(error)
+}
+
 app.get('/api/persons', (req, res) => {
     Notes.find({}).then(data => {
         res.json(data)
     })
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
     Notes.findById(req.params.id).then((note) => {
-        res.json(note)
-    })
+        if (note) {
+            res.json(note)
+        }
+    }).catch(error => next(error))
 })
+
+app.use(Errorhandler)
+
+app.delete('/api/persons/:id', (req, res, next) => {
+    Notes.findByIdAndDelete(req.params.id).then(() => {
+        return res.json({ result: "Deleted!" })
+    }).catch(error => next(error))
+})
+
+app.use(Errorhandler)
+
+
+// const errorHandler = (error, request, response, next) => {
+//     console.error(error.message)
+
+//     if (error.name === 'CastError') {
+//       return response.status(400).send({ error: 'malformatted id' })
+//     }
+
+//     next(error)
+//   }
+
+//   // tämä tulee kaikkien muiden middlewarejen ja routejen rekisteröinnin jälkeen!
+//   app.use(errorHandler)
 
 app.listen(PORT)

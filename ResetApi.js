@@ -53,7 +53,7 @@ app.delete("/api/Users/:id", (req, res) => {
 app.post('/api/Users', (req, res) => {
     const body = req.body;
     Users.push({ id: Users.length + 1, ...body })
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(Users), (err, data) => {
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(Users), () => {
         return res.json({ status: "success", id: Users.length })
     })
 

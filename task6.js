@@ -26,7 +26,7 @@ let Phonebook = [
 
 ]
 
-//app.use(morgan('tiny'))
+app.use(morgan('tiny'))
 //you have got a full data
 
 // app.get('/person',(req,res) => {
